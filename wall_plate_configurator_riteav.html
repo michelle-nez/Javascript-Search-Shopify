@@ -561,12 +561,34 @@
     return getCounts(gangContainer, '.gang-select');
   }
 
-  function buildPhrase(includeWhite) {
+  // For counts of 2+, quotes both phrasings RiteAV titles use ("3 CAT6" and
+  // "3 Port CAT6") so either one matches. A count of 1 stays a bare word
+  // (quoted only if the jack name itself has a space) since single-jack
+  // plates aren't usually numbered in the title.
+  function buildJackSearchTerms() {
+    var counts = getJackCounts();
+
+    return Object.keys(counts)
+      .map(function (type) {
+        var count = counts[type];
+
+        if (count === 1) {
+          return type.indexOf(' ') === -1 ? type : '"' + type + '"';
+        }
+
+        return '"' + count + ' ' + type + '" "' + count + ' port ' + type + '"';
+      })
+      .join(' ');
+  }
+
+  function buildPhrase(includeWhite, useSearchJackTerms) {
     var parts = [];
-    var jackSummary = buildJackSummary(getJackCounts());
+    var jackPart = useSearchJackTerms
+      ? buildJackSearchTerms()
+      : buildJackSummary(getJackCounts());
     var gangSummary = buildGangSummary(getGangCounts());
 
-    if (jackSummary) parts.push(jackSummary);
+    if (jackPart) parts.push(jackPart);
     if (typeSelect.value) parts.push(typeSelect.value);
     if (gangSummary) parts.push(gangSummary);
 
@@ -598,7 +620,7 @@
   }
 
   function doSearch() {
-    var phrase = buildPhrase(false);
+    var phrase = buildPhrase(false, true);
 
     if (!buildJackSummary(getJackCounts())) {
       alert('Select at least one jack type before searching.');
