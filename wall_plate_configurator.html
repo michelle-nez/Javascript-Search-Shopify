@@ -561,10 +561,10 @@
     return getCounts(gangContainer, '.gang-select');
   }
 
-  // For counts of 2+, quotes both phrasings RiteAV titles use ("3 CAT6" and
-  // "3 Port CAT6") so either one matches. A count of 1 stays a bare word
-  // (quoted only if the jack name itself has a space) since single-jack
-  // plates aren't usually numbered in the title.
+  // For counts of 2+, quotes the "N TYPE" phrase (e.g. "3 CAT6") for an
+  // exact-phrase match. A count of 1 stays a bare word (quoted only if the
+  // jack name itself has a space) since single-jack plates aren't usually
+  // numbered in the title.
   function buildJackSearchTerms() {
     var counts = getJackCounts();
 
@@ -576,7 +576,7 @@
           return type.indexOf(' ') === -1 ? type : '"' + type + '"';
         }
 
-        return '"' + count + ' ' + type + '" "' + count + ' port ' + type + '"';
+        return '"' + count + ' ' + type + '"';
       })
       .join(' ');
   }
