@@ -582,6 +582,21 @@
     titleEl.textContent = phrase || 'Start selecting your options';
   }
 
+  // Excludes every jack type NOT selected (e.g. -hdmi -usb2) so the search
+  // doesn't surface combo plates that happen to also mention an unrelated
+  // jack (e.g. "2 CAT6" matching a "CAT6 + HDMI" plate). Multi-word jack
+  // names are quoted so the whole phrase is excluded, not just the first word.
+  function buildJackExclusions() {
+    var selected = Object.keys(getJackCounts());
+
+    return JACK_OPTIONS
+      .filter(function (opt) { return selected.indexOf(opt) === -1; })
+      .map(function (opt) {
+        return opt.indexOf(' ') === -1 ? '-' + opt : '-"' + opt + '"';
+      })
+      .join(' ');
+  }
+
   function doSearch() {
     var phrase = buildPhrase(false);
 
@@ -591,7 +606,10 @@
       return;
     }
 
-    var query = phrase.toLowerCase();
+    var exclusions = buildJackExclusions();
+    var fullQuery = exclusions ? phrase + ' ' + exclusions : phrase;
+
+    var query = fullQuery.toLowerCase();
     var url = 'https://www.riteav.com/search?q=' +
       encodeURIComponent(query).replace(/%20/g, '+') +
       '&options%5Bprefix%5D=last';
