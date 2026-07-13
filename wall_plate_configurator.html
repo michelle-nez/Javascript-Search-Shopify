@@ -561,22 +561,34 @@
     return getCounts(gangContainer, '.gang-select');
   }
 
+  // RiteAV titles write these as "USB 2.0"/"USB 3.0" (space, not joined),
+  // so the search phrase needs the alias rather than the raw option name.
+  var JACK_SEARCH_ALIASES = {
+    'USB2': 'usb 2',
+    'USB3': 'usb 3'
+  };
+
+  function jackSearchName(type) {
+    return JACK_SEARCH_ALIASES[type] || type;
+  }
+
   // For counts of 2+, quotes the "N TYPE" phrase (e.g. "3 CAT6") for an
   // exact-phrase match. A count of 1 stays a bare word (quoted only if the
-  // jack name itself has a space) since single-jack plates aren't usually
-  // numbered in the title.
+  // search name itself has a space, e.g. "usb 2") since single-jack plates
+  // aren't usually numbered in the title.
   function buildJackSearchTerms() {
     var counts = getJackCounts();
 
     return Object.keys(counts)
       .map(function (type) {
         var count = counts[type];
+        var name = jackSearchName(type);
 
         if (count === 1) {
-          return type.indexOf(' ') === -1 ? type : '"' + type + '"';
+          return name.indexOf(' ') === -1 ? name : '"' + name + '"';
         }
 
-        return '"' + count + ' ' + type + '"';
+        return '"' + count + ' ' + name + '"';
       })
       .join(' ');
   }
@@ -604,19 +616,30 @@
     titleEl.textContent = phrase || 'Start selecting your options';
   }
 
-  // Excludes every jack type NOT selected (e.g. -hdmi -usb2) so the search
+  // Excludes every jack type NOT selected (e.g. -hdmi -usb) so the search
   // doesn't surface combo plates that happen to also mention an unrelated
   // jack (e.g. "2 CAT6" matching a "CAT6 + HDMI" plate). Multi-word jack
   // names are quoted so the whole phrase is excluded, not just the first word.
+  // USB2/USB3 collapse into a single "-usb" exclusion (and are skipped
+  // entirely if either one IS selected, since "-usb" would otherwise
+  // contradict a positive "usb 2"/"usb 3" search term).
   function buildJackExclusions() {
     var selected = Object.keys(getJackCounts());
+    var usbSelected = selected.indexOf('USB2') !== -1 || selected.indexOf('USB3') !== -1;
+    var terms = [];
 
-    return JACK_OPTIONS
-      .filter(function (opt) { return selected.indexOf(opt) === -1; })
-      .map(function (opt) {
-        return opt.indexOf(' ') === -1 ? '-' + opt : '-"' + opt + '"';
-      })
-      .join(' ');
+    JACK_OPTIONS.forEach(function (opt) {
+      if (selected.indexOf(opt) !== -1) return;
+
+      if (opt === 'USB2' || opt === 'USB3') {
+        if (!usbSelected && terms.indexOf('-usb') === -1) terms.push('-usb');
+        return;
+      }
+
+      terms.push(opt.indexOf(' ') === -1 ? '-' + opt : '-"' + opt + '"');
+    });
+
+    return terms.join(' ');
   }
 
   function doSearch() {
