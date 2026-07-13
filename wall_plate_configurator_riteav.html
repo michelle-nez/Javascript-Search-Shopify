@@ -42,39 +42,35 @@
     </section>
 
     <section class="jack-config__section" aria-labelledby="jackOptionsHeading">
-      <div class="jack-config__section-bar">
-        <div class="jack-config__section-heading">
-          <span class="jack-config__step" aria-hidden="true">2</span>
-          <div>
-            <h2 id="jackOptionsHeading">Jack options</h2>
-            <p>Add each jack needed in the wall plate.</p>
-          </div>
+      <div class="jack-config__section-heading">
+        <span class="jack-config__step" aria-hidden="true">2</span>
+        <div>
+          <h2 id="jackOptionsHeading">Jack options</h2>
+          <p>Add each jack needed in the wall plate.</p>
         </div>
-
-        <button type="button" id="addComboBtn" class="jack-btn jack-btn--add">
-          <span aria-hidden="true">+</span> Add jack
-        </button>
       </div>
 
       <div id="comboContainer" class="jack-config__rows"></div>
+
+      <button type="button" id="addComboBtn" class="jack-btn jack-btn--add">
+        <span aria-hidden="true">+</span> Add jack
+      </button>
     </section>
 
     <section class="jack-config__section" aria-labelledby="gangOptionsHeading">
-      <div class="jack-config__section-bar">
-        <div class="jack-config__section-heading">
-          <span class="jack-config__step" aria-hidden="true">3</span>
-          <div>
-            <h2 id="gangOptionsHeading">Outlets and gangs</h2>
-            <p>Add an outlet, brush opening, or another gang when needed.</p>
-          </div>
+      <div class="jack-config__section-heading">
+        <span class="jack-config__step" aria-hidden="true">3</span>
+        <div>
+          <h2 id="gangOptionsHeading">Outlets and gangs</h2>
+          <p>Add an outlet, brush opening, or another gang when needed.</p>
         </div>
-
-        <button type="button" id="addGangBtn" class="jack-btn jack-btn--add">
-          <span aria-hidden="true">+</span> Add gang
-        </button>
       </div>
 
       <div id="gangContainer" class="jack-config__rows"></div>
+
+      <button type="button" id="addGangBtn" class="jack-btn jack-btn--add">
+        <span aria-hidden="true">+</span> Add gang
+      </button>
     </section>
 
     <div class="jack-config__actions">
@@ -151,20 +147,11 @@
     border-bottom: 1px solid #e8edf3;
   }
 
-  .jack-config__section-bar,
   .jack-config__section-heading {
     display: flex;
     align-items: center;
-  }
-
-  .jack-config__section-bar {
-    justify-content: space-between;
-    gap: 18px;
-    margin-bottom: 18px;
-  }
-
-  .jack-config__section-heading {
     gap: 12px;
+    margin-bottom: 18px;
   }
 
   .jack-config__section-heading h2 {
@@ -325,6 +312,7 @@
 
   .jack-config .jack-btn--add {
     flex: 0 0 auto;
+    margin-top: 12px;
     border-color: #b7c7d8;
     background: #ffffff;
     color: var(--jack-primary-dark);
@@ -390,11 +378,6 @@
 
     .jack-config__field-grid {
       grid-template-columns: 1fr;
-    }
-
-    .jack-config__section-bar {
-      align-items: flex-start;
-      flex-direction: column;
     }
 
     .jack-config .jack-btn--add {
