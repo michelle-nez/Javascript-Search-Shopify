@@ -1,0 +1,671 @@
+<div class="jack-config">
+  <div class="jack-config__card">
+    <header class="jack-config__header">
+      <span class="jack-config__eyebrow">Product Finder</span>
+      <h1 class="jack-config__heading">Build Your Wall Plate</h1>
+      <p class="jack-config__intro">
+        Select the product style, color, jacks, and optional outlets to find matching products.
+      </p>
+    </header>
+
+    <div class="jack-config__preview" aria-live="polite">
+      <span class="jack-config__preview-label">Your configuration</span>
+      <strong id="jackTitle" class="jack-config__preview-value">Start selecting your options</strong>
+    </div>
+
+    <section class="jack-config__section" aria-labelledby="productDetailsHeading">
+      <div class="jack-config__section-heading">
+        <span class="jack-config__step" aria-hidden="true">1</span>
+        <div>
+          <h2 id="productDetailsHeading">Product details</h2>
+          <p>Choose the product type and finish.</p>
+        </div>
+      </div>
+
+      <div class="jack-config__field-grid">
+        <label class="jack-config__field" for="typeSelect">
+          <span>Product type</span>
+          <select id="typeSelect" class="jack-config__select">
+            <option value="">Select a type...</option>
+            <option value="Wall Plate">Wall Plate</option>
+            <option value="Patch Panel">Patch Panel</option>
+            <option value="Floor Box">Floor Box</option>
+          </select>
+        </label>
+
+        <label class="jack-config__field" for="colorSelect">
+          <span>Color or finish</span>
+          <select id="colorSelect" class="jack-config__select">
+            <option value="">Select a color...</option>
+            <option value="Black">Black</option>
+            <option value="Light Almond">Light Almond</option>
+            <option value="White">White</option>
+            <option value="Brown">Brown</option>
+            <option value="Ivory">Ivory</option>
+            <option value="Wood">Wood</option>
+            <option value="Stainless Steel">Stainless Steel</option>
+          </select>
+        </label>
+      </div>
+    </section>
+
+    <section class="jack-config__section" aria-labelledby="jackOptionsHeading">
+      <div class="jack-config__section-bar">
+        <div class="jack-config__section-heading">
+          <span class="jack-config__step" aria-hidden="true">2</span>
+          <div>
+            <h2 id="jackOptionsHeading">Jack options</h2>
+            <p>Add each jack needed in the wall plate.</p>
+          </div>
+        </div>
+
+        <button type="button" id="addComboBtn" class="jack-btn jack-btn--add">
+          <span aria-hidden="true">+</span> Add jack
+        </button>
+      </div>
+
+      <div id="comboContainer" class="jack-config__rows"></div>
+    </section>
+
+    <section class="jack-config__section" aria-labelledby="gangOptionsHeading">
+      <div class="jack-config__section-bar">
+        <div class="jack-config__section-heading">
+          <span class="jack-config__step" aria-hidden="true">3</span>
+          <div>
+            <h2 id="gangOptionsHeading">Outlets and gangs</h2>
+            <p>Add an outlet, brush opening, or another gang when needed.</p>
+          </div>
+        </div>
+
+        <button type="button" id="addGangBtn" class="jack-btn jack-btn--add">
+          <span aria-hidden="true">+</span> Add gang
+        </button>
+      </div>
+
+      <div id="gangContainer" class="jack-config__rows"></div>
+    </section>
+
+    <div class="jack-config__actions">
+      <button type="button" id="searchBtn" class="jack-btn jack-btn--primary">
+        Find Matching Products
+        <span aria-hidden="true">→</span>
+      </button>
+      <p class="jack-config__action-note">At least one jack selection is required.</p>
+    </div>
+  </div>
+</div>
+
+<style>
+  .jack-config {
+    --jack-primary: #145da0;
+    --jack-primary-dark: #0d477b;
+    --jack-primary-soft: #edf6ff;
+    --jack-text: #1f2937;
+    --jack-muted: #667085;
+    --jack-border: #d7dee8;
+    --jack-surface: #ffffff;
+    --jack-surface-soft: #f7f9fc;
+    --jack-danger: #b42318;
+    --jack-danger-soft: #fff1f0;
+    max-width: 860px;
+    margin: 0 auto;
+    padding: 18px 12px;
+    color: var(--jack-text);
+    font-family: inherit;
+  }
+
+  .jack-config,
+  .jack-config * {
+    box-sizing: border-box;
+  }
+
+  .jack-config__card {
+    overflow: hidden;
+    border: 1px solid var(--jack-border);
+    border-radius: 18px;
+    background: var(--jack-surface);
+    box-shadow: 0 12px 36px rgba(16, 24, 40, 0.09);
+  }
+
+  .jack-config__header {
+    padding: 32px 34px 26px;
+    text-align: center;
+    background: linear-gradient(180deg, #f7fbff 0%, #ffffff 100%);
+  }
+
+  .jack-config__eyebrow {
+    display: inline-block;
+    margin-bottom: 8px;
+    color: var(--jack-primary);
+    font-size: 0.76rem;
+    font-weight: 700;
+    letter-spacing: 0.11em;
+    text-transform: uppercase;
+  }
+
+  .jack-config__heading {
+    margin: 0;
+    color: var(--jack-text);
+    font-size: clamp(1.7rem, 4vw, 2.35rem);
+    line-height: 1.15;
+  }
+
+  .jack-config__intro {
+    max-width: 610px;
+    margin: 12px auto 0;
+    color: var(--jack-muted);
+    font-size: 1rem;
+    line-height: 1.6;
+  }
+
+  .jack-config__preview {
+    display: grid;
+    gap: 4px;
+    margin: 0 34px;
+    padding: 16px 18px;
+    border: 1px solid #bfdcf5;
+    border-radius: 12px;
+    background: var(--jack-primary-soft);
+  }
+
+  .jack-config__preview-label {
+    color: var(--jack-primary-dark);
+    font-size: 0.74rem;
+    font-weight: 700;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+  }
+
+  .jack-config__preview-value {
+    overflow-wrap: anywhere;
+    color: var(--jack-text);
+    font-size: 1rem;
+    line-height: 1.45;
+  }
+
+  .jack-config__section {
+    margin: 0 34px;
+    padding: 28px 0;
+    border-bottom: 1px solid #e8edf3;
+  }
+
+  .jack-config__section-bar,
+  .jack-config__section-heading {
+    display: flex;
+    align-items: center;
+  }
+
+  .jack-config__section-bar {
+    justify-content: space-between;
+    gap: 18px;
+    margin-bottom: 18px;
+  }
+
+  .jack-config__section-heading {
+    gap: 12px;
+  }
+
+  .jack-config__section-heading h2 {
+    margin: 0;
+    color: var(--jack-text);
+    font-size: 1.1rem;
+    line-height: 1.25;
+  }
+
+  .jack-config__section-heading p {
+    margin: 4px 0 0;
+    color: var(--jack-muted);
+    font-size: 0.88rem;
+    line-height: 1.4;
+  }
+
+  .jack-config__step {
+    display: inline-grid;
+    flex: 0 0 34px;
+    width: 34px;
+    height: 34px;
+    place-items: center;
+    border-radius: 50%;
+    background: var(--jack-primary);
+    color: #ffffff;
+    font-size: 0.88rem;
+    font-weight: 700;
+  }
+
+  .jack-config__field-grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 16px;
+    margin-top: 18px;
+  }
+
+  .jack-config__field {
+    display: grid;
+    gap: 7px;
+    margin: 0;
+  }
+
+  .jack-config__field > span {
+    color: #344054;
+    font-size: 0.86rem;
+    font-weight: 650;
+  }
+
+  .jack-config__select,
+  .jack-config .jack-row select {
+    width: 100%;
+    min-height: 46px;
+    margin: 0;
+    padding: 10px 42px 10px 13px;
+    border: 1px solid var(--jack-border);
+    border-radius: 9px;
+    background-color: #ffffff;
+    color: var(--jack-text);
+    font: inherit;
+    font-size: 0.95rem;
+    line-height: 1.3;
+    cursor: pointer;
+    transition: border-color 160ms ease, box-shadow 160ms ease, background-color 160ms ease;
+  }
+
+  .jack-config__select:hover,
+  .jack-config .jack-row select:hover {
+    border-color: #9fb2c8;
+  }
+
+  .jack-config__select:focus,
+  .jack-config .jack-row select:focus,
+  .jack-config .jack-btn:focus-visible,
+  .jack-config .jack-row__remove:focus-visible {
+    outline: none;
+    border-color: var(--jack-primary);
+    box-shadow: 0 0 0 3px rgba(20, 93, 160, 0.16);
+  }
+
+  .jack-config__rows {
+    display: grid;
+    gap: 10px;
+  }
+
+  .jack-config .jack-row {
+    display: grid;
+    grid-template-columns: 86px minmax(0, 1fr) 42px;
+    align-items: center;
+    gap: 10px;
+    min-width: 0;
+    padding: 10px;
+    border: 1px solid #e1e7ee;
+    border-radius: 11px;
+    background: var(--jack-surface-soft);
+  }
+
+  .jack-config .jack-row__label {
+    color: #475467;
+    font-size: 0.82rem;
+    font-weight: 700;
+  }
+
+  .jack-config .jack-row__remove {
+    display: inline-grid;
+    width: 42px;
+    height: 42px;
+    margin: 0;
+    padding: 0;
+    place-items: center;
+    border: 1px solid #e4b8b3;
+    border-radius: 9px;
+    background: var(--jack-danger-soft);
+    color: var(--jack-danger);
+    font: inherit;
+    font-size: 1rem;
+    line-height: 1;
+    cursor: pointer;
+    transition: background-color 160ms ease, border-color 160ms ease, transform 160ms ease;
+  }
+
+  .jack-config .jack-row__remove:hover:not(:disabled) {
+    border-color: #d68d85;
+    background: #ffe4e1;
+    transform: translateY(-1px);
+  }
+
+  .jack-config .jack-row__remove:disabled {
+    border-color: #d9dee5;
+    background: #f3f4f6;
+    color: #98a2b3;
+    cursor: not-allowed;
+    opacity: 0.7;
+  }
+
+  .jack-config .jack-btn {
+    display: inline-flex;
+    min-height: 42px;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    margin: 0;
+    padding: 10px 16px;
+    border: 1px solid transparent;
+    border-radius: 9px;
+    font: inherit;
+    font-size: 0.9rem;
+    font-weight: 700;
+    line-height: 1.2;
+    text-align: center;
+    text-decoration: none;
+    cursor: pointer;
+    transition: background-color 160ms ease, border-color 160ms ease, box-shadow 160ms ease, transform 160ms ease;
+  }
+
+  .jack-config .jack-btn:hover:not(:disabled) {
+    transform: translateY(-1px);
+  }
+
+  .jack-config .jack-btn--add {
+    flex: 0 0 auto;
+    border-color: #b7c7d8;
+    background: #ffffff;
+    color: var(--jack-primary-dark);
+  }
+
+  .jack-config .jack-btn--add:hover:not(:disabled) {
+    border-color: var(--jack-primary);
+    background: var(--jack-primary-soft);
+  }
+
+  .jack-config .jack-btn:disabled {
+    cursor: not-allowed;
+    opacity: 0.5;
+    transform: none;
+  }
+
+  .jack-config__actions {
+    display: grid;
+    justify-items: center;
+    gap: 9px;
+    padding: 28px 34px 34px;
+  }
+
+  .jack-config .jack-btn--primary {
+    width: min(100%, 390px);
+    min-height: 50px;
+    padding: 13px 22px;
+    background: var(--jack-primary);
+    color: #ffffff;
+    font-size: 1rem;
+    box-shadow: 0 8px 18px rgba(20, 93, 160, 0.2);
+  }
+
+  .jack-config .jack-btn--primary:hover {
+    background: var(--jack-primary-dark);
+    box-shadow: 0 10px 22px rgba(20, 93, 160, 0.26);
+  }
+
+  .jack-config__action-note {
+    margin: 0;
+    color: var(--jack-muted);
+    font-size: 0.8rem;
+    text-align: center;
+  }
+
+  @media (max-width: 680px) {
+    .jack-config {
+      padding: 10px 0;
+    }
+
+    .jack-config__card {
+      border-right: 0;
+      border-left: 0;
+      border-radius: 0;
+      box-shadow: none;
+    }
+
+    .jack-config__header {
+      padding: 26px 20px 22px;
+    }
+
+    .jack-config__preview,
+    .jack-config__section {
+      margin-right: 18px;
+      margin-left: 18px;
+    }
+
+    .jack-config__field-grid {
+      grid-template-columns: 1fr;
+    }
+
+    .jack-config__section-bar {
+      align-items: flex-start;
+      flex-direction: column;
+    }
+
+    .jack-config .jack-btn--add {
+      width: 100%;
+    }
+
+    .jack-config__actions {
+      padding-right: 18px;
+      padding-left: 18px;
+    }
+  }
+
+  @media (max-width: 430px) {
+    .jack-config .jack-row {
+      grid-template-columns: minmax(0, 1fr) 42px;
+    }
+
+    .jack-config .jack-row__label {
+      grid-column: 1 / -1;
+    }
+  }
+</style>
+
+<script>
+(function () {
+  var JACK_OPTIONS = [
+    'CAT5E', 'CAT6', 'CAT6 SHIELDED', 'CAT6A SHIELDED', 'CAT7 SHIELDED',
+    'HDMI', 'USB2', 'USB3', 'USBC',
+    'RCA', 'COAX', 'F81', 'BNC', 'SPEAKER', 'TOSLINK',
+    'PHONE', '3.5MM', 'BANANA', 'FIBER LC', 'FIBER SC', 'DC POWER', 'BLANK'
+  ];
+
+  var GANG_OPTIONS = [
+    'Outlet', 'No Outlet', 'Tamper Outlet', 'USB Outlet',
+    'Round Outlet', 'Brush', 'GFCI'
+  ];
+
+  var MAX_ROWS = 12;
+  var MAX_GANG_ROWS = 6;
+
+  var container = document.getElementById('comboContainer');
+  var addBtn = document.getElementById('addComboBtn');
+  var gangContainer = document.getElementById('gangContainer');
+  var addGangBtn = document.getElementById('addGangBtn');
+  var searchBtn = document.getElementById('searchBtn');
+  var titleEl = document.getElementById('jackTitle');
+  var typeSelect = document.getElementById('typeSelect');
+  var colorSelect = document.getElementById('colorSelect');
+
+  function buildSelect(className, placeholder, options, label) {
+    var select = document.createElement('select');
+    select.className = className;
+    select.setAttribute('aria-label', label);
+
+    var blank = document.createElement('option');
+    blank.value = '';
+    blank.textContent = placeholder;
+    select.appendChild(blank);
+
+    options.forEach(function (opt) {
+      var option = document.createElement('option');
+      option.value = opt;
+      option.textContent = opt;
+      select.appendChild(option);
+    });
+
+    select.addEventListener('change', updateTitle);
+    return select;
+  }
+
+  function createRemoveButton(label, onClick) {
+    var button = document.createElement('button');
+    button.type = 'button';
+    button.className = 'jack-row__remove';
+    button.innerHTML = '<span aria-hidden="true">&times;</span>';
+    button.setAttribute('aria-label', label);
+    button.addEventListener('click', onClick);
+    return button;
+  }
+
+  function addRow() {
+    if (container.querySelectorAll('.jack-row').length >= MAX_ROWS) return;
+
+    var row = document.createElement('div');
+    row.className = 'jack-row';
+
+    var rowLabel = document.createElement('span');
+    rowLabel.className = 'jack-row__label';
+
+    var select = buildSelect('jack-select', 'Select a jack...', JACK_OPTIONS, 'Select jack type');
+    var removeBtn = createRemoveButton('Remove jack', function () {
+      row.remove();
+      updateJackRows();
+      updateTitle();
+    });
+
+    row.appendChild(rowLabel);
+    row.appendChild(select);
+    row.appendChild(removeBtn);
+    container.appendChild(row);
+
+    updateJackRows();
+  }
+
+  function addGangRow() {
+    if (gangContainer.querySelectorAll('.jack-row').length >= MAX_GANG_ROWS) return;
+
+    var row = document.createElement('div');
+    row.className = 'jack-row';
+
+    var rowLabel = document.createElement('span');
+    rowLabel.className = 'jack-row__label';
+
+    var select = buildSelect('gang-select', 'Select an option...', GANG_OPTIONS, 'Select outlet or gang option');
+    var removeBtn = createRemoveButton('Remove outlet or gang', function () {
+      row.remove();
+      updateGangRows();
+      updateTitle();
+    });
+
+    row.appendChild(rowLabel);
+    row.appendChild(select);
+    row.appendChild(removeBtn);
+    gangContainer.appendChild(row);
+
+    updateGangRows();
+  }
+
+  function updateRows(parent, labelPrefix, addButton, maximum) {
+    var rows = parent.querySelectorAll('.jack-row');
+
+    rows.forEach(function (row, index) {
+      row.querySelector('.jack-row__label').textContent = labelPrefix + ' ' + (index + 1);
+      row.querySelector('.jack-row__remove').disabled = rows.length <= 1;
+    });
+
+    addButton.disabled = rows.length >= maximum;
+  }
+
+  function updateJackRows() {
+    updateRows(container, 'Jack', addBtn, MAX_ROWS);
+  }
+
+  function updateGangRows() {
+    updateRows(gangContainer, 'Gang', addGangBtn, MAX_GANG_ROWS);
+  }
+
+  function getCounts(parent, selector) {
+    var counts = {};
+
+    parent.querySelectorAll(selector).forEach(function (select) {
+      if (!select.value) return;
+      counts[select.value] = (counts[select.value] || 0) + 1;
+    });
+
+    return counts;
+  }
+
+  function buildGangSummary(counts) {
+    return Object.keys(counts)
+      .filter(function (type) { return type !== 'No Outlet'; })
+      .map(function (type) {
+        return counts[type] === 1 ? type : counts[type] + ' ' + type;
+      })
+      .join(' ');
+  }
+
+  function buildJackSummary(counts) {
+    return Object.keys(counts)
+      .map(function (type) {
+        return counts[type] === 1 ? type : counts[type] + ' ' + type;
+      })
+      .join(' ');
+  }
+
+  function getJackCounts() {
+    return getCounts(container, '.jack-select');
+  }
+
+  function getGangCounts() {
+    return getCounts(gangContainer, '.gang-select');
+  }
+
+  function buildPhrase(includeWhite) {
+    var parts = [];
+    var jackSummary = buildJackSummary(getJackCounts());
+    var gangSummary = buildGangSummary(getGangCounts());
+
+    if (jackSummary) parts.push(jackSummary);
+    if (typeSelect.value) parts.push(typeSelect.value);
+    if (gangSummary) parts.push(gangSummary);
+
+    if (colorSelect.value && (includeWhite || colorSelect.value !== 'White')) {
+      parts.push(colorSelect.value);
+    }
+
+    return parts.join(' ');
+  }
+
+  function updateTitle() {
+    var phrase = buildPhrase(true);
+    titleEl.textContent = phrase || 'Start selecting your options';
+  }
+
+  function doSearch() {
+    var phrase = buildPhrase(false);
+
+    if (!buildJackSummary(getJackCounts())) {
+      alert('Select at least one jack type before searching.');
+      container.querySelector('.jack-select').focus();
+      return;
+    }
+
+    var query = phrase.toLowerCase();
+    var url = 'https://www.riteav.com/search?q=' +
+      encodeURIComponent(query).replace(/%20/g, '+') +
+      '&options%5Bprefix%5D=last';
+
+    window.location.href = url;
+  }
+
+  typeSelect.addEventListener('change', updateTitle);
+  colorSelect.addEventListener('change', updateTitle);
+  addBtn.addEventListener('click', addRow);
+  addGangBtn.addEventListener('click', addGangRow);
+  searchBtn.addEventListener('click', doSearch);
+
+  addRow();
+  addGangRow();
+  updateTitle();
+})();
+</script>
