@@ -85,9 +85,9 @@
 
 <style>
   .jack-config {
-    --jack-primary: #145da0;
-    --jack-primary-dark: #0d477b;
-    --jack-primary-soft: #edf6ff;
+    --jack-primary: #b40000;
+    --jack-primary-dark: #8a0000;
+    --jack-primary-soft: #fdecec;
     --jack-text: #1f2937;
     --jack-muted: #667085;
     --jack-border: #d7dee8;
@@ -121,7 +121,7 @@
     gap: 4px;
     margin: 16px 16px 0;
     padding: 12px 14px;
-    border: 1px solid #bfdcf5;
+    border: 1px solid #f3c6c6;
     border-radius: 12px;
     background: var(--jack-primary-soft);
   }
@@ -228,7 +228,7 @@
   .jack-config .jack-row__remove:focus-visible {
     outline: none;
     border-color: var(--jack-primary);
-    box-shadow: 0 0 0 3px rgba(20, 93, 160, 0.16);
+    box-shadow: 0 0 0 3px rgba(180, 0, 0, 0.16);
   }
 
   .jack-config__rows {
@@ -343,12 +343,12 @@
     background: var(--jack-primary);
     color: #ffffff;
     font-size: 17px;
-    box-shadow: 0 8px 18px rgba(20, 93, 160, 0.2);
+    box-shadow: 0 8px 18px rgba(180, 0, 0, 0.2);
   }
 
   .jack-config .jack-btn--primary:hover {
     background: var(--jack-primary-dark);
-    box-shadow: 0 10px 22px rgba(20, 93, 160, 0.26);
+    box-shadow: 0 10px 22px rgba(180, 0, 0, 0.26);
   }
 
   .jack-config__action-note {
@@ -655,7 +655,7 @@
     var fullQuery = exclusions ? phrase + ' ' + exclusions : phrase;
 
     var query = fullQuery.toLowerCase();
-    var url = 'https://www.riteav.com/search?q=' +
+    var url = 'https://www.findmywallplate.com/search?q=' +
       encodeURIComponent(query).replace(/%20/g, '+') +
       '&options%5Bprefix%5D=last';
 
